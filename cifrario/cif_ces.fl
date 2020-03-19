@@ -1,4 +1,5 @@
 %{ 
+	#include <math.h>
 	int shift = 3;
 	int alfabeto_len = 21;
 	char* alfabeto = "abcdefghilmnopqrstuvz";
@@ -22,6 +23,9 @@ c_letter  	[A-Z]
 		return sc;
 	};
 
-	int main(){
+	int main(int argc, char** argv){
+		if (argc > 0) {
+			shift = atoi(argv[1]);
+		}
 		yylex();
 	}
