@@ -1,0 +1,13 @@
+%{
+    /*int n = 0;*/
+%}
+/* %x A B */
+%%
+    /*"a"     { BEGIN A;  n++;}*/
+    "a" {printf("NO"); return 1;}
+    /*<A>a  {n = n + 1;}
+    <A>b  {BEGIN 0; BEGIN B; n--;}
+    <A>.  {printf("NO"); return 1;}
+    <B>b+ {n=n-yylenght; (n==0)? printf("yes"):printf("no"); return;}
+    <B>.* {printf("NO"); return;}*/
+%%
