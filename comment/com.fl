@@ -1,0 +1,15 @@
+%{
+    
+%}
+
+open "/*"
+close "*/"
+all .|\n
+%x FIND_OPEN
+%%
+{open} { BEGIN FIND_OPEN; printf(" find_open start\n"); }
+
+
+<FIND_OPEN>{all}+ {printf("%s",yytext);}
+{all}  {}
+%%
