@@ -1,0 +1,10 @@
+Ad oggi avete sviluppato un programma Bison che interpreta espressioni aritmetiche che contengono solamente numeri interi (letterali). Dovete ora estendere il vostro programma Bison introducendo variabili di tipo intero che possono essere utilizzate all'interno delle vostre espressioni aritmetiche. Le vostre variabili devono inoltre essere sempre definite prima del loro uso. Dovrete infine introdurre l'operatore di assegnazione. In questo modo potrete scrivere semplici programmi aventi la seguente tipologia:
+
+int x;
+int y;
+x = 2 + 13;
+y = 27 + x;
+print y;
+
+
+Il vostro programma deve essere interpretato e deve gestire una symbol table. Ad ogni definizione di una variabile x, dovete controllare che x non sia già presente nella symbol table, e dovete creare una entry nella symbol table in cui potrete successivamente introdurre il valore aggiornato di x stesso. Per la gestione della symbol table, dovete sviluppare una struttura dati C appropriata, e delle opportune funzioni C per la sua gestione. Se lo ritenete opportuno, potete utilizzare come punto di partenza l'esempio #5 presentato nelle slide 04 - Syntax Analysis (part VIIII - Bison exercises).

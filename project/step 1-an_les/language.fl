@@ -1,0 +1,32 @@
+%{
+
+%}
+
+letter [a-zA-Z]
+digit  [0-9]
+sign   [+\-]
+
+number {sign}?{digit}+
+id  {letter}({letter}|{digit})*
+whitespace [ \n\t]
+type Int
+relop "<"|"<="|"="|">="|">"  
+
+
+%%
+
+{whitespace} {ECHO;}
+declare      {printf("<%s>",yytext);}
+as           {printf("<%s>",yytext);}
+until        {printf("<%s>",yytext);}
+do           {printf("<%s>",yytext);}
+end          {printf("<%s>",yytext);}
+print        {printf("<%s>",yytext);}
+{type}       {printf("<TYPE,%s>",yytext);}
+{number}     {printf("<NUMBER,%s>",yytext);}
+{id}         {printf("<ID,%s>",yytext);}
+{relop}      {printf("<RELOP,'%s'>",yytext);}
+"<-"         {printf("<%s>","ASSIGN");}
+.            {printf("<'%s'>",yytext);}
+
+%%

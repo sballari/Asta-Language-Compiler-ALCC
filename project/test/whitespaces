@@ -1,0 +1,6 @@
+declare x 
+as Int;declare y as Int;
+x <- 2+ 13;
+y<- 27 +   x
+;
+print (y);

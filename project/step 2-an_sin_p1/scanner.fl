@@ -1,0 +1,22 @@
+%option noyywrap
+%{
+    #include <stdlib.h> 
+    #include "parser.h"
+    extern YYSTYPE yylval;
+%}
+
+letter [a-zA-Z]
+digit  [0-9]
+sign   [+\-]
+
+number {digit}+
+id  {letter}({letter}|{digit})*
+whitespace [ \t]
+type Int
+relop "<"|"<="|"="|">="|">"  
+
+%%
+{whitespace}               
+{number}      {yylval = atoi(yytext); return NUMBER;}   
+(.|\n)         {return yytext[0];}                        
+%%
