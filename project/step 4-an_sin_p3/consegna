@@ -1,0 +1,23 @@
+Avete già sviluppato una specifica Bison per un interprete per un micro-linguaggio di programmazione che, tramite l'uso di una symbol table, vi permette di definire variabili di tipo intero, di utilizzare queste variabili all'interno di espressioni aritmetiche, e di assegnare a queste variabili il valore di espressioni aritmetiche.
+
+Dovete adesso introdurre nel vostro linguaggio la nozione di blocco e dovete gestire il campo di visibilità delle vostre variabili secondo le seguenti regole:
+
+    * i blocchi possono essere innestati
+    * il campo di visibilità di una variabile che si trova all'interno di una sequenza di blocchi innestati è determinato dal blocco con estensione più piccola tra tutti i blocchi che definiscono la variabile stessa
+
+In questo modo potrete scrivere semplici programmi aventi la seguente tipologia:
+
+{int x;
+    x = 13;
+    {int x;
+    x = 17;
+    x = x+x
+    print x;}
+print x;}
+
+che fornisce in uscita i seguenti valori:
+
+ 34
+ 13
+
+Per realizzare quanto richiesto, dovete creare una variabile globale che accede ad uno stack i cui elementi sono symbol tables. Dovete inserire una symbol table nello stack all'inizio del vostro programma, e ad ogni apertura di un nuovo blocco dovete inserire nello stack una ulteriore symbol table, per le variabili che hanno campo di visibilità determinato da questo blocco.
