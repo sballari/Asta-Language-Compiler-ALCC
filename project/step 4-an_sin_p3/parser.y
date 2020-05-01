@@ -35,31 +35,25 @@
 
 %token <identifier> ID //Bison declaration to declare token(s) without specifying precedence.
 %token <value> NUMBER
-%token DECLARE AS ASSIGN_OP P_TYPE PRINT //ENDFILE
+%token DECLARE AS ASSIGN_OP P_TYPE PRINT ENDFILE
 %type <value> Aexpr
 
-%precedence ENDFILE //Bison declaration to assign a precedence to a specific rule.
-%left  ';'
 %left  '+' '-'   
 %left  '*' '/'
 %right UMINUS
 
 %%
 
+Prog    : Stms ENDFILE {return 0;} 
 
-
-Prog    : Stm ENDFILE {return 0;} 
-        ; 
+Stms    : Stm Stms
+        |/* empty */ 
+        ;
 
 Stm     : ID ASSIGN_OP Aexpr ';' {setVar($1, $3);} 
         | DECLARE ID AS Type ';'  {addVar($2);}  
         | PRINT '(' Aexpr ')' ';'  {printf("%d\n",($3));}
-        | Stm Stm
-        | Block
-        |/* empty */ 
-        ;
-
-Block   : BO Stm BC 
+        | BO Stms BC 
         ;
 
 BO      : '{' {push(); printf("stack %p\n",stack);}
