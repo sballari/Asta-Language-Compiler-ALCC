@@ -1,3 +1,2 @@
-x <- 1;
 declare x as Int;
 print (x);

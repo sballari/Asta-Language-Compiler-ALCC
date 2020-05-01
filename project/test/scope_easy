@@ -1,0 +1,3 @@
+declare y as Int;
+y <- 100;
+print (y);

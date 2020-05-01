@@ -1,6 +1,6 @@
 declare x as Int;
 {declare y as Int;
-{x <- 2 + 13;}
-y <- 27 + x;
+{x <- 2 + 13;print(x);}
+y <- 27;
 }
 print (y);
