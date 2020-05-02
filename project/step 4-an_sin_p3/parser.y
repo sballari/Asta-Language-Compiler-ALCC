@@ -46,7 +46,7 @@
 
 Prog    : Stms ENDFILE {return 0;} 
 
-Stms    : Stm Stms
+Stms    : Stms Stm
         |/* empty */ 
         ;
 
