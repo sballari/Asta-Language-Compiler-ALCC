@@ -1,0 +1,29 @@
+%option noyywrap
+%{
+    #include <stdlib.h> 
+    #include "parser.h"
+    extern YYSTYPE yylval;
+%}
+
+letter [a-zA-Z]
+digit  [0-9]
+sign   [+\-]
+
+number {digit}+
+id  {letter}({letter}|{digit})*
+whitespace [ \t\n]
+type Int
+
+
+%%
+{whitespace}               
+{number}        {yylval.lexema = yytext; return NUMBER;}       
+declare         {return DECLARE;}
+as              {return AS;}
+print           {return PRINT;}
+{type}          {return P_TYPE;}
+{id}            {yylval.lexema=strdup(yytext); return ID;}
+"<-"            {return ASSIGN_OP;}
+.               {return yytext[0];}
+<<EOF>>         {return ENDFILE;}    
+%%
