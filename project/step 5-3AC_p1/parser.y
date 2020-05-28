@@ -1,4 +1,5 @@
 %{
+		#include "semantic_type.h"
 		#include <stdio.h>
 		#include <ctype.h>
 		#include "uthash.h"
@@ -37,14 +38,9 @@
 		bool checkVar(char* var_name);
 		void gen(int arg_count, ...);
 		FILE* out3AC;
-
-		struct STYPE {
-				char* addr;
-				char* lexeme;
-	}
-
 %}
-%define api.value.type {struct STYPE}
+
+%define api.value.type {struct semantic_type}
 
 %token DECLARE AS ASSIGN_OP P_TYPE PRINT ENDFILE ID NUMBER 
 
@@ -64,29 +60,29 @@ Stms    : Stms Stm
 				|/* empty */ 
 				;
 
-Stm     : ID ASSIGN_OP Aexpr ';' {getVar($1.lexeme); gen("setVar(\"",$1.lexeme,"\",",$3.addr,")");}
-				| DECLARE ID AS Type ';'  {addVar($2.lexeme);gen("addVar(\"",$2.lexeme,"\")");}  
-				| PRINT '(' Aexpr ')' ';'  {gen("printf(getVar(\" ",$3.addr,"\")");}
+Stm     : ID ASSIGN_OP Aexpr ';' {getVar($1.lexeme); gen(6,"setVar(\"",$1.lexeme,"\",",$3.addr,")",";\n");}
+				| DECLARE ID AS Type ';'  {addVar($2.lexeme);gen(4,"addVar(\"",$2.lexeme,"\")",";\n");}  
+				| PRINT '(' Aexpr ')' ';'  {gen(4,"printf(getVar(\"",$3.addr,"\"))",";\n");}
 				| BO Stms BC 
 				;
 
-BO      : '{' {push(); gen("push()");}
+BO      : '{' {push(); gen(2,"push()",";\n");}
 				;
 
-BC      : '}' {pop(); gen("pop()");}
+BC      : '}' {pop(); gen(2,"pop()",";\n");}
 				;        
 
 Type    : P_TYPE
 				;
 
-Aexpr   : Aexpr '+' Aexpr {$$.addr = tmp(); gen($$.addr, " = ", $1.addr, " + ", $3.addr, ";\n");}
-				| Aexpr '-' Aexpr {$$.addr = tmp(); gen($$.addr, " = ", $1.addr, " - ", $3.addr, ";\n");}
-				| Aexpr '*' Aexpr {$$.addr = tmp(); gen($$.addr, " = ", $1.addr, " * ", $3.addr, ";\n");}
-				| Aexpr '/' Aexpr {$$.addr = tmp(); gen($$.addr, " = ", $1.addr, " / ", $3.addr, ";\n");}
+Aexpr   : Aexpr '+' Aexpr {$$.addr = tmp(); gen(6,$$.addr, " = ", $1.addr, " + ", $3.addr, ";\n");}
+				| Aexpr '-' Aexpr {$$.addr = tmp(); gen(6,$$.addr, " = ", $1.addr, " - ", $3.addr, ";\n");}
+				| Aexpr '*' Aexpr {$$.addr = tmp(); gen(6,$$.addr, " = ", $1.addr, " * ", $3.addr, ";\n");}
+				| Aexpr '/' Aexpr {$$.addr = tmp(); gen(6,$$.addr, " = ", $1.addr, " / ", $3.addr, ";\n");}
 				| '(' Aexpr ')'   {$$.addr = $2.addr;}
-				| '-' Aexpr %prec UMINUS {$$.addr = tmp(); gen($$.addr, " = ", "- ", $2.addr, ";\n");}
-				| NUMBER {$$.addr = tmp(); gen($$.addr," = ",$1.lexeme);}
-				| ID {getVar($1.lexeme);$$.addr = tmp(); gen($$.addr,"= getVar(\"",$1.lexeme,"\");\n");}
+				| '-' Aexpr %prec UMINUS {$$.addr = tmp(); gen(5,$$.addr, " = ", "- ", $2.addr, ";\n");}
+				| NUMBER {$$.addr = tmp(); gen(4,$$.addr," = ",$1.lexeme, ";\n");}
+				| ID {getVar($1.lexeme);$$.addr = tmp(); gen(5,$$.addr," = getVar(\"",$1.lexeme,"\")", ";\n");}
 				;
 
 
@@ -115,7 +111,7 @@ void addVar(char* var_name){
 								tmp->var_name = var_name;
 								tmp->value = 0;
 								HASH_ADD_KEYPTR(hh,stack->symbol_table,tmp->var_name,strlen(tmp->var_name),tmp);
-								printf("tmp add := (%p,%p)\n",stack,tmp);
+								//printf("tmp add := (%p,%p)\n",stack,tmp);
 				}
 				else {
 								fprintf(stderr, "ERROR: multiple declaration of variable %s.\n",var_name);
@@ -143,7 +139,7 @@ int getVar(char* var_name){
 				const struct stackEl* current_stack = stack;
 				while (current_stack != NULL && tmp == NULL) {
 								HASH_FIND_STR(current_stack->symbol_table, var_name, tmp);
-								printf("tmp get := (%p,%p)\n",current_stack,tmp);
+								//printf("tmp get := (%p,%p)\n",current_stack,tmp);
 								current_stack = current_stack->prec;
 				}
 				if (tmp==NULL) {
@@ -158,10 +154,10 @@ bool checkVar(char* var_name){
 				const struct stackEl* current_stack = stack;
 				while (current_stack != NULL && tmp == NULL) {
 								HASH_FIND_STR(current_stack->symbol_table, var_name, tmp);
-								printf("tmp get := (%p,%p)\n",current_stack,tmp);
+								//printf("tmp check := (%p,%p)\n",current_stack,tmp);
 								current_stack = current_stack->prec;
 				}
-				return (tmp!=NULL);
+				return (tmp==NULL);
 }
 
 void push() {
@@ -191,7 +187,7 @@ void gen(int arg_count, ...){
 				va_list ap; 
 				va_start(ap, arg_count); 
 				
-				for (i = 0; i < arg_count; i++) 
-								fprintf{out3AC,"%s ",va_arg(ap, char*);
+				for (int i = 0; i < arg_count; i++) 
+								fprintf(out3AC,"%s",va_arg(ap, char*));
 				va_end(ap); 
 }
