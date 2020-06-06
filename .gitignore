@@ -1,6 +1,6 @@
 *.c
-*.h
-
+parser.h
+scanner.h
 # Flex
 lex.yy.c
 
