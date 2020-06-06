@@ -1,0 +1,39 @@
+%option noyywrap
+%{
+    #include "semantic_type.h"
+    #include <stdlib.h> 
+    #include "parser.h"
+    extern YYSTYPE yylval;
+%}
+
+letter [a-zA-Z]
+digit  [0-9]
+sign   [+\-]
+rel_op [<=,>=,<,>,=]
+
+number {digit}+
+id  {letter}({letter}|{digit})*
+whitespace [ \t\n]
+type Int
+
+
+%%
+{whitespace}               
+{number}        {yylval.lexeme = strdup(yytext); return NUMBER;}
+{rel_op}        {yylval.rel_op = strdup(yytext); return REL_OP;}       
+&&              {return AND;}
+\|\|            {return OR;}
+false           {return FALSE;}
+true            {return TRUE;}
+declare         {return DECLARE;}
+as              {return AS;}
+if              {return IF;}
+loop            {return LOOP;}
+do              {return DO;}
+print           {return PRINT;}
+{type}          {return P_TYPE;}
+{id}            {yylval.lexeme = strdup(yytext); return ID;}
+"<-"            {return ASSIGN_OP;}
+.               {return yytext[0];}
+<<EOF>>         {return ENDFILE;}    
+%%
