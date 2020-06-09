@@ -44,12 +44,12 @@
 
 %define api.value.type {struct semantic_type}
 
-%token DECLARE AS ASSIGN_OP P_TYPE PRINT ENDFILE ID NUMBER REL_OP AND OR NOT TRUE FALSE LOOP DO IF
+%token DECLARE AS ASSIGN_OP P_TYPE PRINT ENDFILE ID NUMBER REL_OP AND OR NOT TRUE FALSE LOOP DO IF 
 
-%nonassoc LOWER
 %left  '+' '-'   
 %left  '*' '/'
-%nonassoc ':'
+%precedence THEN
+%precedence ELSE
 %right UMINUS
 %left OR
 %left AND
@@ -67,13 +67,13 @@ Stm     : ID ASSIGN_OP Aexpr  ';' 	{getVar($1.lexeme); gen(6,"setVar(\"",$1.lexe
 		| PRINT '(' Aexpr ')' ';'   {gen(4,"printf(getVar(\"",$3.addr,"\"))",";\n");}
 		| BO Stms BC
 		| LOOP Bexpr DO Stm
-		| IF Bexpr M Stm ':' N Stm	
-		| IF Bexpr M Stm %prec LOWER
+		| IF Bexpr THEN M Stm 		{gen(2,$4.b_false,":\n");}
+		| IF Bexpr THEN M Stm ELSE N Stm
 		;
 
-N 		:   {$$.next = $-2.next; gen(3,"goto ",$$.next,";\n" );}
+M		: 	{$$.b_false = newLabel(); gen(5,"ifFalse ",$-1.addr, " goto ",$$.b_false,";\n" );}
 
-M		: 	{$$.next = $-2.next; gen(5,"ifFalse ",$0.addr, " goto ",$$.next,";\n" );}
+N 		:   {$$.next = $-6.next; $$.b_false = $-2.b_false; gen(3,"goto ",$$.next,";\n" ); gen(2,$$.b_false,":\n");}
 
 BO      :   '{' {push(); gen(2,"push()",";\n");}
 	    ;
