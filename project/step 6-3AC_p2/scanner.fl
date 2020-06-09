@@ -28,6 +28,8 @@ true            {return TRUE;}
 declare         {return DECLARE;}
 as              {return AS;}
 if              {return IF;}
+then            {return THEN;}
+else            {return ELSE;}
 loop            {return LOOP;}
 do              {return DO;}
 print           {return PRINT;}
