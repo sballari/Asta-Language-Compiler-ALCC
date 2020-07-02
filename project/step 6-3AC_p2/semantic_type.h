@@ -8,6 +8,7 @@ typedef struct semantic_type {
     char* b_false;
     char* rel_op;
     char* next;
+    char* begin;
 }semantic_type;
 
 #endif
