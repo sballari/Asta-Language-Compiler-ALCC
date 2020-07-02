@@ -1,0 +1,6 @@
+declare x as Int;
+x <- 1;
+loop x>0 do {
+    if 1=1 then x<- -100;
+    else x<-1;
+}
