@@ -1,4 +1,4 @@
-%{
+	%{
 		#include "semantic_type.h"
 		#include <stdio.h>
 		#include <ctype.h>
@@ -59,21 +59,27 @@
 Prog    : Stms ENDFILE {return 0;}
 
 Stms    : Stms Stm    {gen(2,$1.next,":\n"); $$.next = newLabel();}
-		| /* empty */ {$$.next = newLabel();} 
+		| /* empty */ {$$.next = newLabel();}
 		;
 
 Stm     : ID ASSIGN_OP Aexpr  ';' 	{getVar($1.lexeme); gen(6,"setVar(\"",$1.lexeme,"\",",$3.addr,")",";\n");}
 		| DECLARE ID AS Type  ';'  	{addVar($2.lexeme);gen(4,"addVar(\"",$2.lexeme,"\")",";\n");}  
 		| PRINT '(' Aexpr ')' ';'   {gen(4,"printf(getVar(\"",$3.addr,"\"))",";\n");}
 		| BO Stms BC
-		| LOOP Bexpr DO Stm
-		| IF Bexpr THEN M Stm 		{gen(2,$4.b_false,":\n");}
+		| LOOP L Bexpr O DO P Stm   {gen(3,"goto ",$2.begin,"\n");}
+		| IF Bexpr THEN M Stm 		{gen(4,$4.b_false,":\n goto ",$4.next,"\n");}
 		| IF Bexpr THEN M Stm ELSE N Stm
 		;
 
-M		: 	{$$.b_false = newLabel(); gen(5,"ifFalse ",$-1.addr, " goto ",$$.b_false,";\n" );}
+M		: 	{$$.next = $-3.next; $$.b_false = newLabel(); gen(5,"ifFalse ",$-1.addr, " goto ",$$.b_false,";\n" );}
 
 N 		:   {$$.next = $-6.next; $$.b_false = $-2.b_false; gen(3,"goto ",$$.next,";\n" ); gen(2,$$.b_false,":\n");}
+
+L		: 	{$$.begin = newLabel(); gen(2,$$.begin,":\n");}
+
+O		:	{gen(5,"ifFalse ",$0.addr, " goto ",$-3.next,";\n");}
+
+P		:	{$$.next = $-5.next;}
 
 BO      :   '{' {push(); gen(2,"push()",";\n");}
 	    ;
