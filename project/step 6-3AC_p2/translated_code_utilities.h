@@ -31,7 +31,7 @@ void addVar(char* var_name){
 				variable *tmp;
 				HASH_FIND_STR(stack->symbol_table, var_name, tmp);
 				if (tmp==NULL) {
-								tmp = (variable*) malloc(sizeof(variable));
+								tmp = malloc(sizeof *tmp);
 								tmp->var_name = var_name;
 								tmp->value = 0;
 								HASH_ADD_KEYPTR(hh,stack->symbol_table,tmp->var_name,strlen(tmp->var_name),tmp);
@@ -85,7 +85,7 @@ bool checkVar(char* var_name){
 }
 
 void push() {
-				struct stackEl* El = (struct stackEl*) malloc(sizeof(struct stackEl));
+				struct stackEl* El = malloc(sizeof *El);
 				El->prec=stack;
 				El->symbol_table=NULL;
 				stack = El;

@@ -88,7 +88,7 @@ Bexpr	: Bexpr OR Bexpr  		{$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.addr
 %%
 
 int main(int argc, char** argv) {
-		stack = (struct stackEl*) malloc(sizeof(struct stackEl));
+		stack = malloc(sizeof *stack);
 		stack->symbol_table=NULL;
 		stack->prec=NULL;
 		if (argc > 1) yyin = fopen(argv[1], "r");
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
 		gen(1,"#include \"translated_code_utilities.h\"");
 		gen(1,"#include <stdio.h>");
 		gen(1,"int main() {");
-		gen(1,"stack = (struct stackEl*) malloc(sizeof(struct stackEl));");
+		gen(1,"stack = malloc(sizeof *stack);");
 		gen(1,"stack->symbol_table=NULL;");
 		gen(1,"stack->prec=NULL;");
 		if (yyparse() != 0)
@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
 void yyerror(char *s) {}
 
 char* tmp() {      
-				char* var_name = (char*) malloc(10*sizeof(char));
+				char* var_name = malloc(10 * sizeof *var_name);
 				do{     
 								snprintf(var_name,10,"t%i",fresh_counter);
 								fresh_counter++; 
@@ -130,7 +130,7 @@ void gen(int arg_count, ...){
 }
 
 char* newLabel(){
-	char* label = (char*) malloc(10*sizeof(char));
+	char* label = malloc(10 * sizeof *label);
 	snprintf(label,10,"L%i",label_counter);
 	label_counter++;
 	return label; 
