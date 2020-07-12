@@ -1,0 +1,14 @@
+declare x as Int;
+declare y as Int;
+x <- 5;
+y <- x;
+if (x<1) then {
+    print(x);
+}
+else {
+    loop x > 1 do {
+        x <- (x-1);
+        y <- y*x;
+    }
+    print(y);
+}
