@@ -41,7 +41,7 @@ Stms    : Stms Stm    {gen(2,$1.next,": ;"); $$.next = newLabel();}
 
 Stm     : ID ASSIGN_OP Aexpr  ';' 	{getVar($1.lexeme); gen(6,"setVar(\"",$1.lexeme,"\",",$3.addr,")",";");}
 		| DECLARE ID AS Type  ';'  	{addVar($2.lexeme); gen(4,"addVar(\"",$2.lexeme,"\")",";");}  
-		| PRINT '(' Aexpr ')' ';'   {gen(4,"printf(\"%i\",",$3.addr,")",";");}
+		| PRINT '(' Aexpr ')' ';'   {gen(4,"printf(\"%i\\n\"",",",$3.addr,");");}
 		| BO Stms BC
 		| LOOP L Bexpr O DO P Stm   {gen(3,"goto ",$2.begin,";");}
 		| IF Bexpr THEN M Stm 		{gen(4,$4.b_false,": ;\n goto ",$4.next,";");}
