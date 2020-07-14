@@ -4,7 +4,7 @@
 		#include <ctype.h>
 		#define _OPEN_SYS_ITOA_EXT
 		#include <stdarg.h>
-		#include "translated_code_utilities.h"
+		#include "symbol_table_utilities.h"
 	
 		extern FILE *yyin;
 		int yylex();
@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 		if (argc > 1) yyin = fopen(argv[1], "r");
 		if (argc > 2) out3AC = fopen(argv[2], "w");
 		else   out3AC = stdout;
-		gen(1,"#include \"translated_code_utilities.h\"");
+		gen(1,"#include \"symbol_table_utilities.h\"");
 		gen(1,"#include <stdio.h>");
 		gen(1,"int main() {");
 		gen(1,"stack = malloc(sizeof *stack);");
