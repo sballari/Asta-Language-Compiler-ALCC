@@ -1,7 +1,10 @@
 # How to generate the 3AC code
 ./dependencies.h
+
 ./compile
+
 ./parser source_path output.c //output di default print a schermo
+
 gcc output.c
 
 
