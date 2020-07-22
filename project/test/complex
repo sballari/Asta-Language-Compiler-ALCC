@@ -1,0 +1,23 @@
+declare x as Int;
+x <- 3;
+declare i as Int;
+i <- 1;
+declare j as Int;
+loop( i <= 14 ) do {
+  if( 3 <= i && i <= 7 || 11 <= i && i <= 13 ) then {
+    j <- 1;
+    loop( j <= 7 ) do{
+      x <- x + 5;
+      j <- j + 1;
+    }
+  }
+  else {
+    j <- 1;
+    loop( j <= 11) do{
+      x <- x + 13;
+      j <- j + 1;
+    }
+  }
+  i <- i + 1;
+}
+print(x);
