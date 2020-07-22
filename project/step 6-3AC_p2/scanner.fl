@@ -9,7 +9,7 @@
 letter [a-zA-Z]
 digit  [0-9]
 sign   [+\-]
-rel_op [<=,>=,<,>,=]
+rel_op <=|>=|<|>|=
 
 number {digit}+
 id  {letter}({letter}|{digit})*
