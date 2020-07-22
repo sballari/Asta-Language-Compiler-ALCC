@@ -1,4 +1,4 @@
-	%{
+%{
 		#include "semantic_type.h"
 		#include <stdio.h>
 		#include <ctype.h>
@@ -77,8 +77,8 @@ Aexpr   : Aexpr '+' Aexpr 		 {$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.a
 		| ID 					 {getVar($1.lexeme);$$.addr = tmp(); gen(6,"int ",$$.addr," = getVar(\"",$1.lexeme,"\")", ";");}
 		;
 
-Bexpr	: Bexpr OR Bexpr  		{$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.addr, " OR ", $3.addr, ";");}
-		| Bexpr AND Bexpr 		{$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.addr, " AND ", $3.addr, ";");}
+Bexpr	: Bexpr OR Bexpr  		{$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.addr, " || ", $3.addr, ";");}
+		| Bexpr AND Bexpr 		{$$.addr = tmp(); gen(7,"int ",$$.addr, " = ", $1.addr, " && ", $3.addr, ";");}
 		| NOT Bexpr 			{$$.addr = tmp(); gen(6,"int ",$$.addr, " = ", "!", $2.addr, ";");}
 		| Aexpr REL_OP Aexpr 	{$$.addr = tmp(); gen(7,"int ",$$.addr," = ", $1.addr, $2.rel_op, $3.addr, ";");}
 		| TRUE 					{$$.addr = "true";}
